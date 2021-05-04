@@ -1,0 +1,28 @@
+ 
+ 
+SELECT TOPCOUNT([DIM Jugadores].[Nombre].[Nombre].ALLMEMBERS, 10,[Measures].[EFF]) ON ROWS,
+[Measures].[EFF] ON COLUMNS
+FROM [Cube_SS]
+WHERE ( [DIM Jugadores].[Liga].&[NBA], [DIM Tiempo].[Temporada].&[2011 - 2012] ) 
+
+WITH MEMBER [Measures].[Perc3] AS
+([3PM]/[3PA])
+SELECT TOPCOUNT([DIM Jugadores].[Nombre].[Nombre].ALLMEMBERS, 10,[Measures].[Perc3]) ON ROWS,
+[Measures].[Perc3] ON COLUMNS
+FROM [Cube_SS]
+WHERE ( [DIM Jugadores].[Liga].&[NBA], [DIM Tiempo].[Temporada].&[2011 - 2012] ) 
+
+
+SELECT ORDER ([DIM Equipos].[Nombre Equipo].[Nombre Equipo].ALLMEMBERS, [Measures].[DREB], DESC) ON ROWS ,
+[Measures].[DREB] ON COLUMNS
+FROM [Cube_SS]
+WHERE ( [DIM Tiempo].[Temporada].&[2014 - 2015], [DIM Equipos].[Liga].&[NBA] ) 
+
+
+SELECT TOPCOUNT([DIM Jugadores].[Nombre].[Nombre].ALLMEMBERS, 10,[Measures].[3P]) ON ROWS,
+[Measures].[3P] ON COLUMNS
+ FROM ( SELECT ( { [DIM Jugadores].[Liga].&[NBA] } ) ON COLUMNS 
+ FROM ( SELECT ( { [DIM Tiempo].[Temporada].&[2011 - 2012] } ) ON COLUMNS 
+ FROM [Cube_SS])) 
+ WHERE ( [DIM Tiempo].[Temporada].&[2011 - 2012], [DIM Jugadores].[Liga].&[NBA] ) 
+ CELL PROPERTIES VALUE, BACK_COLOR, FORE_COLOR, FORMATTED_VALUE, FORMAT_STRING, FONT_NAME, FONT_SIZE, FONT_FLAGS
